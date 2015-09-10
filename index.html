@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html>
+
+	<table width=100%>
+		<tr>
+			<td align="center"> <u>WHITE</u> </td>
+			<td></td>
+			<td align="center"> <u>BLACK</u> </td>
+		</tr>
+		<tr>
+			<td align="center"> <span id="countDownWhite"></span> </td>
+			<td align="center"> <span id="whosTurn"></span></td>
+			<td align="center"> <span id="countDownBlack"></span> </td>
+		</tr>
+		<tr>
+			<td align="center">  <button onclick="takeTurns(0)">BLACK'S TURN -&gt;</button>  </span> </td>
+			<td></td>
+			<td align="center">  <button onclick="takeTurns(1)"> &lt;- WHITE'S TURN</button>  </span> </td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="center"> <button onclick="init()">RESET TIMERS</button> </td>
+			<td></td>
+		</tr>
+
+	</table>
+
+<!-- HERE COMES JAVASCRIPT --> 
+
+    <script>
+		
+	  var whiteTime = 240;
+  	var blackTime = 240;
+	  var isWhiteTurn = false;
+	  var isBlackTurn = false; 
+	  var countdownTimer = null;
+	
+	  function getTime(time){
+	    var minutes = Math.floor(time / 60);
+    	var seconds = time % 60;
+    		
+      if (seconds < 10) {
+          seconds = "0" + seconds;  
+    	}		
+	    return String(minutes + ":" + seconds);	
+	}
+
+	function elapsed(playerTime) {
+ 	
+		var time = getTime(playerTime);
+		
+		if(isWhiteTurn === true){
+			document.getElementById('countDownWhite').innerHTML = time;
+			if (playerTime === 0) {
+        	clearInterval(countdownTimer);
+       		window.alert("WHITE IS OUT OF TIME!");
+			    init();
+    	}else{
+        	whiteTime--;
+    	}
+
+		}else{
+			document.getElementById('countDownBlack').innerHTML = time;
+			if (playerTime === 0) {
+          clearInterval(countdownTimer);
+       		window.alert("BLACK IS OUT OF TIME!");
+			    init();
+    	}else{
+        	blackTime--;
+    	}
+		}
+	}
+
+	function takeTurns(player){
+		if(player === 1){
+			clearInterval(countdownTimer);
+			isWhiteTurn = true;
+			isBlackTurn = false;
+			document.getElementById('whosTurn').innerHTML = "WHITE TO MOVE";
+			countdownTimer = setInterval('elapsed(whiteTime)', 1000);
+		}else{
+			clearInterval(countdownTimer);
+			isWhiteTurn = false;
+			isBlackTurn = true;
+			document.getElementById('whosTurn').innerHTML = "BLACK TO MOVE";
+			countdownTimer = setInterval('elapsed(blackTime)', 1000);
+		}
+	} 
+
+	function init() {
+
+		if(countdownTimer !== null){
+			clearInterval(countdownTimer);
+		}
+		
+		document.getElementById('whosTurn').innerHTML = "WHITE TO MOVE";		
+
+		isWhiteTurn = false;
+		isBlackTurn = false;
+
+		whiteTime = 240;
+		blackTime = 240;
+
+		document.getElementById('countDownWhite').innerHTML = getTime(whiteTime);
+		document.getElementById('countDownBlack').innerHTML = getTime(blackTime);
+	}
+	
+	init();
+		
+    </script>
+
+</html>
